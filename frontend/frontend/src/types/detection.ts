@@ -1,3 +1,5 @@
+export type ObjectType = "person" | "car" | "bus" | "truck" | "motorcycle";
+
 export interface BoundingBox {
   x1: number;
   y1: number;
@@ -6,15 +8,39 @@ export interface BoundingBox {
 }
 
 export interface Detection {
-  label: string;
+  id: string;
+  label: ObjectType;
   confidence: number;
   box: BoundingBox;
 }
 
-export interface DetectionResponse {
-  type: "detection" | "error";
-  width?: number;
-  height?: number;
-  detections?: Detection[];
-  message?: string;
+export interface Camera {
+  id: string;
+  name: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  status: "online" | "offline";
+}
+
+export interface Alert {
+  id: string;
+  cameraId: string;
+  type: "crowded" | "traffic" | "unknown";
+  message: string;
+  timestamp: string;
+}
+
+export interface DetectionMessage {
+  type: "detection";
+  cameraId: string;
+  width: number;
+  height: number;
+  detections: Detection[];
+  counts: {
+    person: number;
+    vehicle: number;
+  };
+  alerts: Alert[];
 }
